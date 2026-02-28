@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ayllin Celeste — CV </title>
+
+<!-- Tipografías -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  :root{
+    --bg-1: #fff6fb;    /* home gradient start */
+    --bg-2: #f4f0ff;    /* home gradient mid */
+    --card-bg: rgba(255,255,255,0.95);
+    --accent: #c084fc;  /* violeta dulce */
+    --accent-2: #ffb3d9;/* rosa pastel */
+    --text: #333;
+    --muted: #6b6b6b;
+    --glass: rgba(255,255,255,0.6);
+  }
+
+  /* lavender theme (toggle) */
+  .theme-lavender{
+    --bg-1: #f3f0ff;
+    --bg-2: #eef7ff;
+    --card-bg: rgba(250,245,255,0.95);
+    --accent: #8b60ff;
+    --accent-2: #ffd9f0;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:var(--text);
+    background: linear-gradient(180deg,var(--bg-1), var(--bg-2));
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  /* top fixed navbar */
+  .topbar{
+    position:fixed;
+    left:0; right:0; top:12px;
+    margin:0 auto;
+    max-width:1100px;
+    height:56px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:8px 16px;
+    border-radius:14px;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(20,20,40,0.08);
+    z-index:40;
+  }
+
+  .logo{
+    display:flex; align-items:center; gap:12px;
+  }
+  .logo .mark{
+    width:44px;height:44px;border-radius:10px;
+    background: linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;color:white;font-weight:700;
+    box-shadow:0 6px 18px rgba(110,80,200,0.18);
+    font-family: 'Playfair Display', serif;
+  }
+  .logo .name{ font-weight:700; color:var(--text) }
+
+  .nav{
+    display:flex; gap:8px; align-items:center;
+  }
+  .nav button{
+    background:transparent; border:none; padding:8px 12px; border-radius:10px;
+    cursor:pointer; font-weight:600; color:var(--muted);
+    transition: all .22s;
+  }
+  .nav button:hover{ background:var(--glass); color:var(--text); transform:translateY(-2px) }
+
+  .controls{ display:flex; gap:8px; align-items:center; }
+
+  .icon-btn{
+    width:38px;height:38px;border-radius:10px;border:none;background:transparent;cursor:pointer;
+    display:grid;place-items:center;color:var(--muted);
+  }
+  .icon-btn:hover{ background:var(--glass); color:var(--text); transform:translateY(-2px) }
+
+  /* Home section (hero) */
+  #home{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
+  }
+  .hero{
+    max-width:980px;
+    padding:48px;
+    border-radius:20px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,250,255,0.85));
+    box-shadow: 0 30px 60px rgba(20,20,50,0.08);
+    backdrop-filter: blur(6px);
+  }
+  .hero h1{
+    margin:0 0 12px 0;
+    font-family:'Playfair Display', serif;
+    font-size:40px;
+    color:var(--accent);
+  }
+  .hero p{
+    margin:0 0 22px 0;
+    color:var(--muted);
+    font-size:18px;
+  }
+  .hero .cta{
+    display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  }
+  .btn-primary{
+    background: linear-gradient(90deg,var(--accent), var(--accent-2));
+    color:white; border:none; padding:12px 20px;border-radius:12px; cursor:pointer; font-weight:700;
+    box-shadow:0 8px 30px rgba(140,80,250,0.14);
+    transition:transform .18s;
+  }
+  .btn-primary:hover{ transform:translateY(-3px) }
+
+  .btn-ghost{
+    background:white;border:1px solid rgba(0,0,0,0.06); padding:12px 20px;border-radius:12px;color:var(--muted); cursor:pointer;
+  }
+  .btn-ghost:hover{ transform:translateY(-3px) }
+
+  /* container sections (cards) */
+  .card{
+    max-width:1000px;
+    margin:36px auto;
+    padding:32px;
+    background:var(--card-bg);
+    border-radius:18px;
+    box-shadow:0 20px 50px rgba(20,20,40,0.06);
+    display:none; /* hidden by default */
+    transform: translateY(18px);
+    opacity:0;
+    transition: all .45s cubic-bezier(.2,.9,.2,1);
+  }
+  .card.visible{ display:block; transform: translateY(0); opacity:1 }
+
+  .card h2{
+    margin:0 0 16px 0; color:var(--accent); font-family:'Playfair Display', serif;
+    display:flex;align-items:center;gap:12px;font-size:22px;
+  }
+
+  /* info layout: photo left, text right */
+  .info-row{ display:flex; gap:28px; align-items:center; }
+  .photo-square{
+    width:210px; height:210px; border-radius:14px; overflow:hidden;
+    flex-shrink:0; box-shadow:0 12px 30px rgba(100,80,200,0.08);
+    border: 2px solid rgba(0,0,0,0.04);
+  }
+  .photo-square img{ width:100%; height:100%; object-fit:cover; display:block }
+
+  .meta p{ margin:8px 0; color:var(--text); font-size:15px }
+  .muted{ color:var(--muted); font-size:14px }
+
+  /* small icon badges for list items */
+  .list-icon{ width:36px; height:36px; border-radius:8px; display:inline-grid; place-items:center;
+    margin-right:12px; background: linear-gradient(135deg, rgba(200,120,255,0.12), rgba(255,190,230,0.12)); color:var(--accent);
+    border:1px solid rgba(200,120,255,0.06);
+  }
+
+  ul.clean{ padding-left:0; list-style:none; margin-top:12px }
+  ul.clean li{ padding:12px 0; display:flex; align-items:center; border-bottom: 1px dashed rgba(0,0,0,0.04) }
+
+  /* volver al inicio sticky bottom */
+  .back-top{
+    position:fixed; right:18px; bottom:22px; z-index:60;
+    background: white; border-radius:14px; padding:10px 12px; box-shadow:0 8px 30px rgba(20,20,40,0.08);
+    cursor:pointer; display:flex; align-items:center; gap:8px; border:none;
+  }
+  .back-top small{ color:var(--muted); font-size:12px }
+
+  /* responsive */
+  @media (max-width:900px){
+    .topbar{ left:10px; right:10px; max-width:unset; padding:8px }
+    .info-row{ flex-direction:column; text-align:center }
+    .photo-square{ width:170px; height:170px }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar" role="navigation" aria-label="Principal">
+  <div class="logo" onclick="goHome()" style="cursor:pointer">
+    <div class="mark">AC</div>
+    <div class="name"><small style="display:block;color:var(--muted);font-size:12px">CV</small><strong>Ayllin Celeste</strong></div>
+  </div>
+
+  <div class="nav" aria-hidden="false">
+    <button onclick="mostrar('info')"><i class="fa-solid fa-user" style="color:var(--accent)"></i>&nbsp; Información</button>
+    <button onclick="mostrar('formacion')"><i class="fa-solid fa-book" style="color:var(--accent)"></i>&nbsp; Formación</button>
+    <button onclick="mostrar('reconocimientos')"><i class="fa-solid fa-trophy" style="color:var(--accent)"></i>&nbsp; Reconocimientos</button>
+    <button onclick="mostrar('idiomas')"><i class="fa-solid fa-language" style="color:var(--accent)"></i>&nbsp; Idiomas</button>
+    <button onclick="mostrar('motivacion')"><i class="fa-solid fa-star" style="color:var(--accent)"></i>&nbsp; Motivación</button>
+  </div>
+
+  <div class="controls">
+    <button class="icon-btn" id="themeToggle" title="Cambiar tema"><i class="fa-solid fa-sparkles"></i></button>
+    <button class="icon-btn" onclick="goHome()" title="Inicio"><i class="fa-solid fa-house"></i></button>
+  </div>
+</div>
+
+<!-- HOME / HERO -->
+<section id="home" aria-label="Bienvenida">
+  <div class="hero" role="article">
+    <h1>¡Bienvenidos a mi espacio personal!</h1>
+    <p>Estudiante de Ingeniería en Ciencias de la Computación — Ayllin Celeste Santos Chavarria.</p>
+
+    <div class="cta" style="margin-top:12px">
+      <button class="btn-primary" onclick="mostrar('info')">Ver Información</button>
+      <button class="btn-ghost" onclick="mostrar('motivacion')">Leer Motivación</button>
+    </div>
+  </div>
+</section>
+
+<!-- CARD: INFORMACIÓN -->
+<article class="card" id="info" aria-labelledby="infoTitle">
+  <h2 id="infoTitle"><span class="list-icon"><i class="fa-solid fa-user"></i></span> Información Personal</h2>
+
+  <div class="info-row">
+    <div class="photo-square">
+      <img src="mifoto.jpeg.jpeg" alt="Foto de Ayllin Celeste">
+    </div>
+
+    <div class="meta">
+      <p><strong>Nombre:Ayllin Celeste Santos Chavarria</p>
+      <p><strong> Teléfono:</strong> 73465042</p>
+      <p><strong>Número del tutor:</strong> 76121233</p>
+      <p><strong>Correo:</strong> santoschavarriaayllinceleste@gmail.com</p>
+      <p><strong>Fecha de nacimiento:</strong> 12/01/2008</p>
+      <p><strong>Género:</strong> Femenino</p>
+      <p><strong>Nacionalidad:</strong> Boliviana</p>
+      <div style="margin-top:12px"><button class="btn-ghost" onclick="volverInicio()">Volver al inicio</button></div>
+    </div>
+  </div>
+</article>
+
+<!-- CARD: FORMACIÓN -->
+<article class="card" id="formacion" aria-labelledby="formacionTitle">
+  <h2 id="formacionTitle"><span class="list-icon"><i class="fa-solid fa-book"></i></span> Formación Académica</h2>
+  <ul class="clean">
+    <li><span class="list-icon"><i class="fa-solid fa-school"></i></span><div><strong>Primaria</strong><div class="muted">Unidad Educativa Valentín Abecia</div></div></li>
+    <li><span class="list-icon"><i class="fa-solid fa-chalkboard-user"></i></span><div><strong>Secundaria</strong><div class="muted">Liceo Nacional María Josefa Mujía</div></div></li>
+  </ul>
+  <div style="margin-top:16px"><button class="btn-ghost" onclick="volverInicio()">Volver al inicio</button></div>
+</article>
+
+<!-- CARD: RECONOCIMIENTOS (editado) -->
+<article class="card" id="reconocimientos" aria-labelledby="recoTitle">
+  <h2 id="recoTitle"><span class="list-icon"><i class="fa-solid fa-trophy"></i></span> Reconocimientos</h2>
+
+  <ul class="clean">
+    <li><span class="list-icon"><i class="fa-solid fa-award"></i></span><div><strong>4to lugar</strong><div class="muted">Olimpiadas del Desafío del Saber 2025 </div></div></li>
+    <li><span class="list-icon"><i class="fa-solid fa-hand-holding-heart"></i></span><div><strong>Reconocimiento</strong><div class="muted">CIMET — compromiso y participación 2025 (voluntariado)</div></div></li>
+    <li><span class="list-icon"><i class="fa-solid fa-star"></i></span><div><strong>Distinción Artística</strong><div class="muted">Gobierno Municipal de Sucre (2024) (Ballet Municipal)</div></div></li>
+  </ul>
+
+  <div style="margin-top:16px"><button class="btn-ghost" onclick="volverInicio()">Volver al inicio</button></div>
+</article>
+
+<!-- CARD: IDIOMAS -->
+<article class="card" id="idiomas" aria-labelledby="idiomasTitle">
+  <h2 id="idiomasTitle"><span class="list-icon"><i class="fa-solid fa-language"></i></span> Idiomas</h2>
+
+  <ul class="clean">
+    <li><span class="list-icon"><i class="fa-solid fa-comment"></i></span><div><strong>Español</strong><div class="muted">Nativo</div></div></li>
+    <li><span class="list-icon"><i class="fa-solid fa-comment"></i></span><div><strong>Inglés</strong><div class="muted">Nivel A2</div></div></li>
+  </ul>
+
+  <div style="margin-top:16px"><button class="btn-ghost" onclick="volverInicio()">Volver al inicio</button></div>
+</article>
+
+<!-- CARD: MOTIVACIÓN (tu texto completo sin cambios) -->
+<article class="card" id="motivacion" aria-labelledby="motTitle">
+  <h2 id="motTitle"><span class="list-icon"><i class="fa-solid fa-heart"></i></span> Motivación Académica</h2>
+
+  <div style="line-height:1.65; color:var(--text);">
+    <p>
+    La razón por la que decidí entrar a estudiar Ingeniería en Ciencias de la Computación tiene que ver con un cambio de planes en mi vida personal y escolar. Antes de considerar esta carrera, yo practicaba baile, una actividad a la que le dedicaba mucho tiempo. Sin embargo, debido a una lesión en la rodilla, tuve que dejar de practicarlo de manera definitiva. Este suceso me obligó a buscar otras opciones de estudio y fue así como empecé a interesarme por la tecnología. Al no poder realizar una actividad física, encontré en el área digital una nueva vocación que antes no había tomado en cuenta pero que me pareció una alternativa sólida para mi formación profesional.
+    </p>
+
+    <p>
+    Mi elección también tiene una base familiar, ya que en mi entorno cercano siempre ha habido ingenieros en informática y personas que trabajan en otros ámbitos tecnológicos. Gracias a ellos, pude conocer un poco más de cerca de qué trata el trabajo en esta área y el tipo de actividades que se realizan en el día a día. Ver este ejemplo en mi familia me ayudó a entender que la ingeniería es una opción con mucha estabilidad. No fue una decisión que tomé sola, sino que también fue influenciada por observar cómo se desarrolla el mundo laboral en este sector actualmente y las ventajas que ofrece a quienes deciden estudiar una carrera técnica.
+    </p>
+
+    <p>
+    Además, mi abuela materna fue la persona que más me impulsó a tomar esta decisión de estudiar ingeniería. Antes de fallecer, ella siempre hablaba conmigo sobre la importancia de elegir una carrera con futuro y me animaba mucho a entrar en este ámbito. Me explicaba que la tecnología es un mundo innovador y que estudiar algo relacionado me daría muchas oportunidades laborales en el futuro. Sus consejos fueron una de las razones principales por las que terminé de decidirme por esta ingeniería. Ella veía mucho potencial en este campo y sus palabras se quedaron grabadas en mi mente al momento de elegir mi camino académico.
+    </p>
+
+    <p>
+    En resumen, mi entrada a la carrera de Ingeniería en Ciencias de la Computación es el resultado de varios factores combinados. Por un lado, la lesión de rodilla que cambió mis intereses y, por otro, la influencia de mi familia y los consejos constantes de mi abuela. Considero que esta es una carrera que ofrece una formación muy completa y que se adapta bien a lo que busco ahora. Es una transición de una actividad que ya no puedo realizar a un campo profesional que tiene mucha demanda y donde se puede aprender constantemente sobre las nuevas herramientas tecnológicas que existen hoy en día.
+    </p>
+  </div>
+
+  <div style="margin-top:18px"><button class="btn-ghost" onclick="volverInicio()">Volver al inicio</button></div>
+</article>
+
+<!-- back to top -->
+<button class="back-top" aria-label="Volver arriba" onclick="goHome()">
+  <i class="fa-solid fa-arrow-up" style="color:var(--accent)"></i>
+  <small>Inicio</small>
+</button>
+
+<script>
+  // Inicial: nada visible (home visible). Si deseas abrir una sección por defecto, descomenta la línea showId('info')
+  const sectionsOrder = ['info','formacion','reconocimientos','idiomas','motivacion'];
+
+  function hideAll(){
+    sectionsOrder.forEach(id=>{
+      const el = document.getElementById(id);
+      if(el){ el.classList.remove('visible'); el.style.display='none'; }
+    });
+  }
+
+  function mostrar(id){
+    hideAll();
+    const el = document.getElementById(id);
+    if(!el) return;
+    // small delay to ensure display block before transition
+    el.style.display='block';
+    requestAnimationFrame(()=> el.classList.add('visible'));
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function volverInicio(){
+    hideAll();
+    document.getElementById('home').scrollIntoView({behavior:'smooth'});
+  }
+
+  function goHome(){
+    volverInicio();
+  }
+
+  // Theme toggle: pastel <-> lavender
+  const body = document.body;
+  const themeToggle = document.getElementById('themeToggle');
+  let lavender=false;
+  themeToggle.addEventListener('click', ()=>{
+    lavender = !lavender;
+    if(lavender) body.classList.add('theme-lavender'); else body.classList.remove('theme-lavender');
+    // small pulse
+    themeToggle.style.transform='scale(1.06)';
+    setTimeout(()=> themeToggle.style.transform='scale(1)',150);
+  });
+
+  // keyboard shortcut: H to go home
+  document.addEventListener('keydown', (e)=>{
+    if(e.key.toLowerCase()==='h') goHome();
+  });
+
+  // accessibility: ensure "home" is scrolled into view on load
+  window.addEventListener('load', ()=> {
+    document.getElementById('home').scrollIntoView();
+  });
+</script>
+</body>
+</html>
